@@ -6,7 +6,7 @@ define([
 			this.sceneObjects = [];
 		},
 
-		load: function(renderer) {
+		load: function(renderer, scene, camera) {
 
 		},
 

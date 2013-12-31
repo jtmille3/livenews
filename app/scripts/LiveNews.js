@@ -1,3 +1,9 @@
+require.config({
+    paths: {
+        text: "../../../bower_components/requirejs-text/text"
+    }
+  });
+
 require([
   './utilities/AssetManager',
   './GameEngine',

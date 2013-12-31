@@ -20,7 +20,7 @@ define([
         load: function(renderer) {
         	for (var i = 0; i < this.entities.length; i++) {
                 var entity = this.entities[i];
-                entity.load(renderer, this.scene);
+                entity.load(renderer, this.scene, this.camera);
             }
 
 			for (var i = 0; i < this.lights.length; i++) {

@@ -8,7 +8,7 @@ define([
       this.options = options;
     },
 
-    load: function(renderer, scene) {
+    load: function(renderer, scene, camera) {
       this.galaxy = new THREE.Mesh(
         new THREE.SphereGeometry(90, 64, 64),
         new THREE.MeshBasicMaterial({
