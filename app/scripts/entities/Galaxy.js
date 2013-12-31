@@ -5,10 +5,8 @@ define([
   
   return Entity.extend({
     init: function(options) {
-      this.options = options;
-    },
+      this._super(options);
 
-    load: function(renderer, scene, camera) {
       this.galaxy = new THREE.Mesh(
         new THREE.SphereGeometry(90, 64, 64),
         new THREE.MeshBasicMaterial({
@@ -17,12 +15,7 @@ define([
         })
       );
 
-      scene.add(this.galaxy);
-      this.mesh = this.galaxy;
-    },
-
-    unload: function(renderer, scene) {
-      scene.remove(this.galaxy);
+      this.add(this.galaxy);
     }
   });
 });

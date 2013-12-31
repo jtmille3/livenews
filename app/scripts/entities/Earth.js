@@ -7,10 +7,8 @@ define([
 	
 	return Entity.extend({
 		init: function(options) {
-			this.options = options;
-		},
+			this._super(options);
 
-		load: function(renderer, scene, camera) {
 			var earthGeometry = new THREE.SphereGeometry(0.5, 32, 32);
 
 			this.earth = new THREE.Mesh(
@@ -18,13 +16,13 @@ define([
 			  new THREE.MeshPhongMaterial({
 			    map: THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
 			    bumpMap: THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
-			    bumpScale:   0.005,
+			    bumpScale: 0.005,
 			    specularMap: THREE.ImageUtils.loadTexture('images/water_4k.png'),
 			    specular: new THREE.Color('grey')
 			  })
 			);
 
-			scene.add(this.earth);
+			this.add(this.earth);
 			this.mesh = this.earth;
 
 			var customMaterial = new THREE.ShaderMaterial({
@@ -41,7 +39,7 @@ define([
 					},
 					viewVector: { 
 						type: "v3", 
-						value: camera.position // new THREE.Vector3(1, 0, 1) /* Doesn't work: camera.position */ 
+						value: new THREE.Vector3(1, 0, 1)
 					}
 				},
 				vertexShader: AtmosphereVertex,
@@ -54,17 +52,11 @@ define([
 			this.earthAtmosphere = new THREE.Mesh(earthGeometry.clone(), customMaterial.clone());
 			this.earthAtmosphere.position = this.earth.position;
 			this.earthAtmosphere.scale.multiplyScalar(1.01);
-			scene.add( this.earthAtmosphere );
-
-			this.camera = camera;
-		},
-
-		unload: function(renderer, scene) {
-			scene.remove(this.earth);
+			this.add( this.earthAtmosphere );
 		},
 
 		update: function() {
-			this.earthAtmosphere.material.uniforms.viewVector.value = new THREE.Vector3().subVectors( this.camera.position, this.earth.position );
+			this.earthAtmosphere.material.uniforms.viewVector.value = new THREE.Vector3().subVectors( this.options.camera.position, this.earth.position );
 		}
 	});
 });

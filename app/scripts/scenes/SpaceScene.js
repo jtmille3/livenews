@@ -16,8 +16,7 @@ define([
       FAR = 1000;
 
       this.camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
-      this.camera.position.set( 1, 0, 1 );
-      this.camera.up = new THREE.Vector3( 0, 1, 0 );
+      this.camera.up.set( 0, 1, 0 );
 
       this.scene = new Physijs.Scene({
         fixedTimeStep: 1 / 60
@@ -32,11 +31,15 @@ define([
       directionalLight.position.set(5, 0, 5);
       this.addLight( directionalLight );
 
-      this.galaxy = new Galaxy();
+      this.galaxy = new Galaxy({
+        scene: this.scene,
+        camera: this.camera
+      });
       this.addEntity(this.galaxy);
 
       this.earth = new Earth({
-        radius: 0.05
+        scene: this.scene,
+        camera: this.camera
       });
       this.addEntity(this.earth);
     },
