@@ -9,7 +9,7 @@ define([
 		init: function(options) {
 			this._super(options);
 
-			var earthGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+			var earthGeometry = new THREE.SphereGeometry(0.5, 64, 64);
 
 			this.earth = new THREE.Mesh(
 			  earthGeometry.clone(),

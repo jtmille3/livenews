@@ -21,8 +21,8 @@ define([
 
       this.pin.add(ball);
 
-      this.pin.rotation.y = this.options.longitude * Math.PI / 180;
       this.pin.rotation.x = this.options.latitude * Math.PI / -180;
+      this.pin.rotation.y = this.options.longitude * Math.PI / 180;
 
       this.add(this.pin);
     }

@@ -68,6 +68,7 @@ define([
       });
       this.addEntity(this.raleigh2);
 
+      /* This is incorrect for some reason */
       this.raleigh = new Pin({
         scene: this.scene,
         camera: this.camera,
@@ -111,8 +112,8 @@ define([
       this._super();
       var timer = Date.now() * 0.0001;
 
-      this.camera.position.x = -1.4; // Math.cos( timer ) * 1.4;
-      this.camera.position.z = 1.4; // Math.sin( timer ) * 1.4;
+      this.camera.position.x = -1.4;
+      this.camera.position.z = 1.4;
 
       this.camera.lookAt ( this.earth.mesh.position );
     },
