@@ -4,9 +4,9 @@ require.config({
     }
 });
 
-require(['app', 'jquery'], function (app, $) {
+require(['./LiveNews', 'jquery'], function (LiveNews, $) {
     'use strict';
-    // use app here
-    console.log(app);
-    console.log('Running jQuery %s', $().jquery);
+    
+    var liveNews = new LiveNews();
+    liveNews.start();
 });
