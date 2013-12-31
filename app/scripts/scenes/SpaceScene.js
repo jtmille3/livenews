@@ -1,7 +1,8 @@
 define([
   './Scene',
-  '../entities/Earth',
-], function(Scene, Earth) {
+  '../entities/Galaxy',
+  '../entities/Earth'
+], function(Scene, Galaxy, Earth) {
   'use strict';
   return Scene.extend({
 
@@ -12,7 +13,7 @@ define([
       var VIEW_ANGLE = 45,
       ASPECT = window.innerWidth / window.innerHeight,
       NEAR = 0.01,
-      FAR = 2000;
+      FAR = 1000;
 
       this.camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
       this.camera.up = new THREE.Vector3( 0, 1, 0 );
@@ -23,25 +24,27 @@ define([
       this.scene.setGravity(new THREE.Vector3( 0, 0, -9.8 ));
       // this.Scene.fog = new THREE.Fog( 0x777777, 0, 20 );
 
+      var ambientLight = new THREE.AmbientLight(0x333333);
+      this.addLight( ambientLight );
+
       // directional lighting
-      var directionalLight = new THREE.DirectionalLight(0xEEEEEE, 0.7);
-      directionalLight.target.position.copy( this.scene.position );
-      directionalLight.castShadow = true;
-      directionalLight.shadowDarkness = 0.7;
-      directionalLight.shadowCameraVisible = false; // will show the wire frame
+      var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      // directionalLight.target.position.copy( this.scene.position );
+      // directionalLight.castShadow = true;
+      // directionalLight.shadowDarkness = 0.7;
+      // directionalLight.shadowCameraVisible = false; // will show the wire frame
 
-      directionalLight.shadowCameraLeft = directionalLight.shadowCameraTop = -5;
-      directionalLight.shadowCameraRight = directionalLight.shadowCameraBottom = 5;
-      directionalLight.shadowCameraNear = 0.01;
-      directionalLight.shadowCameraFar = 100;
-      directionalLight.shadowBias = -0.0001;
-      directionalLight.shadowMapWidth = directionalLight.shadowMapHeight = 2048;
-
+      // directionalLight.shadowCameraLeft = directionalLight.shadowCameraTop = -5;
+      // directionalLight.shadowCameraRight = directionalLight.shadowCameraBottom = 5;
+      // directionalLight.shadowCameraNear = 0.01;
+      // directionalLight.shadowCameraFar = 100;
+      // directionalLight.shadowBias = -0.0001;
+      // directionalLight.shadowMapWidth = directionalLight.shadowMapHeight = 2048;
       directionalLight.position.set(5, 0, 5);
       this.addLight( directionalLight );
 
-      var ambientLight = new THREE.AmbientLight(0x404040);
-      this.addLight( ambientLight );
+      this.galaxy = new Galaxy();
+      this.addEntity(this.galaxy);
 
       this.earth = new Earth({
         radius: 0.05
@@ -81,11 +84,11 @@ define([
 
     update: function() {
       this._super();
-      var timer = Date.now() * 0.0005;
+      var timer = Date.now() * 0.0001;
 
       this.camera.position.x = Math.cos( timer ) * 3;
       this.camera.position.z = Math.sin( timer ) * 3;
-      this.camera.position.y = 1;
+      //this.camera.position.y = 1;
 
       this.camera.lookAt ( this.earth.mesh.position );
     },

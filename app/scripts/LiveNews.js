@@ -16,7 +16,7 @@ require([
 
     assets.queueDownload('images/2_no_clouds_4k.jpg');
     assets.queueDownload('images/elev_bump_4k.jpg');
-    assets.queueDownload('images/fair_clouds_8k.jpg');
+    assets.queueDownload('images/fair_clouds_4k.png');
     assets.queueDownload('images/galaxy_starfield.png');
     assets.queueDownload('images/water_4k.png');
     
