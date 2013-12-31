@@ -86,8 +86,8 @@ define([
       this._super();
       var timer = Date.now() * 0.0001;
 
-      this.camera.position.x = Math.cos( timer ) * 3;
-      this.camera.position.z = Math.sin( timer ) * 3;
+      this.camera.position.x = Math.cos( timer ) * 1.5;
+      this.camera.position.z = Math.sin( timer ) * 1.5;
       //this.camera.position.y = 1;
 
       this.camera.lookAt ( this.earth.mesh.position );
