@@ -28,7 +28,7 @@ define([
       this.addLight( ambientLight );
 
       // directional lighting
-      var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
       // directionalLight.target.position.copy( this.scene.position );
       // directionalLight.castShadow = true;
       // directionalLight.shadowDarkness = 0.7;

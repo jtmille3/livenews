@@ -9,10 +9,8 @@ define([
     },
 
     load: function(renderer, scene) {
-      var radius = 90;
-      var segments = 64;
       this.galaxy = new THREE.Mesh(
-        new THREE.SphereGeometry(radius, segments, segments),
+        new THREE.SphereGeometry(90, 64, 64),
         new THREE.MeshBasicMaterial({
           map:  THREE.ImageUtils.loadTexture('images/galaxy_starfield.png'),
           side: THREE.BackSide
