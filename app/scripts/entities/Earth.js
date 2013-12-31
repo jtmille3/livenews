@@ -30,7 +30,7 @@ define([
 			var customMaterial = new THREE.ShaderMaterial({
 	    	uniforms: { 
 					c: { 
-						type: "f", value: 1.0 
+						type: "f", value: 0.9
 					},
 					p: { 
 						type: "f", value: 2.5
