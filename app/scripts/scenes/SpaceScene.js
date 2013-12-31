@@ -44,11 +44,35 @@ define([
       });
       this.addEntity(this.earth);
 
+      this.origin = new Pin({
+        scene: this.scene,
+        camera: this.camera,
+        latitude: 0,
+        longitude: 0
+      });
+      this.addEntity(this.origin);
+
+      this.raleigh1 = new Pin({
+        scene: this.scene,
+        camera: this.camera,
+        latitude: 0,
+        longitude: -78.6450559
+      });
+      this.addEntity(this.raleigh1);
+
+      this.raleigh2 = new Pin({
+        scene: this.scene,
+        camera: this.camera,
+        latitude: 35.843768,
+        longitude: 0
+      });
+      this.addEntity(this.raleigh2);
+
       this.raleigh = new Pin({
         scene: this.scene,
         camera: this.camera,
-        latitude: 35.843768, // north
-        longitude: -78.6450559 // west
+        latitude: 35.843768,
+        longitude: -78.6450559
       });
       this.addEntity(this.raleigh);
     },
@@ -87,8 +111,8 @@ define([
       this._super();
       var timer = Date.now() * 0.0001;
 
-      this.camera.position.x = Math.cos( timer ) * 1.4;
-      this.camera.position.z = Math.sin( timer ) * 1.4;
+      this.camera.position.x = -1.4; // Math.cos( timer ) * 1.4;
+      this.camera.position.z = 1.4; // Math.sin( timer ) * 1.4;
 
       this.camera.lookAt ( this.earth.mesh.position );
     },
