@@ -22,6 +22,8 @@ define([
 			  })
 			);
 
+			this.earth.rotation.y = 270 * Math.PI / 180; // puts us at point 0 along the prime meridian and equator
+
 			this.add(this.earth);
 			this.mesh = this.earth;
 

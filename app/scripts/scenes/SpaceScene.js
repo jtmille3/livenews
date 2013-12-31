@@ -1,8 +1,9 @@
 define([
   './Scene',
   '../entities/Galaxy',
-  '../entities/Earth'
-], function(Scene, Galaxy, Earth) {
+  '../entities/Earth',
+  '../entities/Pin'
+], function(Scene, Galaxy, Earth, Pin) {
   'use strict';
   return Scene.extend({
 
@@ -42,6 +43,14 @@ define([
         camera: this.camera
       });
       this.addEntity(this.earth);
+
+      this.raleigh = new Pin({
+        scene: this.scene,
+        camera: this.camera,
+        latitude: 35.843768, // north
+        longitude: -78.6450559 // west
+      });
+      this.addEntity(this.raleigh);
     },
 
     load: function(renderer) {
