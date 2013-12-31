@@ -17,6 +17,7 @@ define([
       FAR = 1000;
 
       this.camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+      this.camera.position.set(1, 0, 1);
       this.camera.up.set( 0, 1, 0 );
 
       this.scene = new Physijs.Scene({
@@ -52,30 +53,45 @@ define([
       });
       this.addEntity(this.origin);
 
-      this.raleigh1 = new Pin({
-        scene: this.scene,
-        camera: this.camera,
-        latitude: 0,
-        longitude: -78.6450559
-      });
-      this.addEntity(this.raleigh1);
+      // raleigh 35.843768 N, -78.6450559 W
+      var latitude = 35.843768;
+      var longitude = -78.6450559;
+      this.addPin(0, 0);
+      this.addPin(0, longitude);
+      this.addPin(latitude, 0);
+      this.addPin(latitude, longitude);
 
-      this.raleigh2 = new Pin({
-        scene: this.scene,
-        camera: this.camera,
-        latitude: 35.843768,
-        longitude: 0
-      });
-      this.addEntity(this.raleigh2);
+      // for(var i = -20; i < 20; i = i + 0.1) {
+      //   this.addPin(latitude / i, 0);
+      //   this.addPin(0, longitude / i);
+      //   this.addPin(latitude / i, longitude / i);
+      // }
 
-      /* This is incorrect for some reason */
-      this.raleigh = new Pin({
+      this.controls = new THREE.TrackballControls( this.camera );
+
+      this.controls.rotateSpeed = 1.0;
+      this.controls.zoomSpeed = 1.2;
+      this.controls.panSpeed = 0.8;
+
+      this.controls.noZoom = false;
+      this.controls.noPan = false;
+
+      this.controls.staticMoving = true;
+      this.controls.dynamicDampingFactor = 0.3;
+
+      this.controls.keys = [ 65, 83, 68 ];
+
+      // this.controls.addEventListener( 'change', render );
+    },
+
+    addPin: function(latitude, longitude) {
+      var pin = new Pin({
         scene: this.scene,
         camera: this.camera,
-        latitude: 35.843768,
-        longitude: -78.6450559
+        latitude: latitude,
+        longitude: longitude
       });
-      this.addEntity(this.raleigh);
+      this.addEntity(pin);
     },
 
     load: function(renderer) {
@@ -112,10 +128,12 @@ define([
       this._super();
       var timer = Date.now() * 0.0001;
 
-      this.camera.position.x = -1.4;
-      this.camera.position.z = 1.4;
+      //this.camera.position.x = -1.1; //Math.cos(timer) * 1.4;
+      //this.camera.position.z = 1.1; //Math.sin(timer) * 1.4;
 
       this.camera.lookAt ( this.earth.mesh.position );
+
+      this.controls.update();
     },
 
     resize: function(width, height) {
