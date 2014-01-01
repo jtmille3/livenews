@@ -9,6 +9,8 @@ define([
 		init: function(options) {
 			this._super(options);
 
+			this.object = new THREE.Object3D();
+
 			var earthGeometry = new THREE.SphereGeometry(0.5, 64, 64);
 
 			this.earth = new THREE.Mesh(
@@ -23,10 +25,8 @@ define([
 			    specular: new THREE.Color('grey')
 			  })
 			);
-
 			this.earth.rotation.y = 270 * Math.PI / 180; // puts us at point 0 along the prime meridian and equator
-
-			this.add(this.earth);
+			this.object.add(this.earth);
 			this.mesh = this.earth;
 
 			var boundariesMaterial = new THREE.MeshBasicMaterial({ 
@@ -41,7 +41,9 @@ define([
 			this.boundaries.position = this.earth.position;
 			this.boundaries.scale.multiplyScalar(1.0001);
 			this.boundaries.rotation.y = 270 * Math.PI / 180; // puts us at point 0 along the prime meridian and equator
-			this.add( this.boundaries );
+			this.object.add( this.boundaries );
+
+			this.add(this.object);
 
 			var atmosphereMaterial = new THREE.ShaderMaterial({
 	    	uniforms: { 
@@ -67,6 +69,7 @@ define([
 				transparent: true
 			});
 
+			// needs to move independently of earth
 			this.earthAtmosphere = new THREE.Mesh(earthGeometry.clone(), atmosphereMaterial.clone());
 			this.earthAtmosphere.position = this.earth.position;
 			this.earthAtmosphere.scale.multiplyScalar(1.005);
@@ -76,6 +79,10 @@ define([
 		update: function() {
 			// make sure the atmosphere glow is always behind the sphere
 			this.earthAtmosphere.material.uniforms.viewVector.value = new THREE.Vector3().subVectors( this.options.camera.position, this.earth.position );
+		},
+
+		addPin: function(pin) {
+			this.object.add(pin);
 		}
 	});
 });

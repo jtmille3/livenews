@@ -87,7 +87,7 @@ define([
         latitude: latitude,
         longitude: longitude
       });
-      this.addEntity(pin);
+      this.earth.addPin(pin);
     },
 
     load: function(renderer) {
