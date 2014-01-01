@@ -87,7 +87,7 @@ define([
         latitude: latitude,
         longitude: longitude
       });
-      this.earth.addPin(pin);
+      this.earth.addPin(pin.pin);
     },
 
     load: function(renderer) {
@@ -126,6 +126,9 @@ define([
 
       //this.camera.position.x = -1.1; //Math.cos(timer) * 1.4;
       //this.camera.position.z = 1.1; //Math.sin(timer) * 1.4;
+      if(this.earth) {
+        this.earth.object.rotation.y += Math.cos(timer) * Math.PI / 180;
+      }
 
       this.camera.lookAt ( this.earth.mesh.position );
 

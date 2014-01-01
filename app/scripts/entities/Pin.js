@@ -32,7 +32,7 @@ define([
       quaternion.setFromAxisAngle(new THREE.Vector3(0,1,0).normalize(), this.options.longitude * Math.PI / 180);
       this.pin.quaternion.multiplyQuaternions(quaternion, this.pin.quaternion);
 
-      this.add(this.pin);
+      // this.add(this.pin);
     }
   });
 });
