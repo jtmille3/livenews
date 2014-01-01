@@ -45,27 +45,20 @@ define([
       });
       this.addEntity(this.earth);
 
-      this.origin = new Pin({
-        scene: this.scene,
-        camera: this.camera,
-        latitude: 0,
-        longitude: 0
-      });
-      this.addEntity(this.origin);
-
       // raleigh 35.843768 N, -78.6450559 W
-      var latitude = 35.843768;
-      var longitude = -78.6450559;
-      this.addPin(0, 0);
-      this.addPin(0, longitude);
-      this.addPin(latitude, 0);
-      this.addPin(latitude, longitude);
+      this.addPin(35.843768, -78.6450559);
 
-      // for(var i = -20; i < 20; i = i + 0.1) {
-      //   this.addPin(latitude / i, 0);
-      //   this.addPin(0, longitude / i);
-      //   this.addPin(latitude / i, longitude / i);
-      // }
+      // London 51.5112139, -0.1198244
+      this.addPin(51.5112139, -0.1198244);
+
+      // NY 40.7143528, -74.0059731
+      this.addPin(40.7143528, -74.0059731);
+
+      // Tokyo 35.6894875, 139.6917064
+      this.addPin(35.6894875, 139.6917064);
+
+      // Cape Town -33.9248685!4d18.4240553
+      this.addPin(-33.9248685, 18.4240553);
 
       this.controls = new THREE.TrackballControls( this.camera );
 
