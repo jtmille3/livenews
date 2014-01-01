@@ -46,14 +46,14 @@ define([
 			var atmosphereMaterial = new THREE.ShaderMaterial({
 	    	uniforms: { 
 					c: { 
-						type: "f", value: 0.9
+						type: "f", value: 1.5
 					},
 					p: { 
-						type: "f", value: 2.5
+						type: "f", value: 6.0
 					},
 					glowColor: { 
 						type: "c", 
-						value: new THREE.Color(0x0000ff) 
+						value: new THREE.Color(0x6789af) 
 					},
 					viewVector: { 
 						type: "v3", 
@@ -69,7 +69,7 @@ define([
 
 			this.earthAtmosphere = new THREE.Mesh(earthGeometry.clone(), atmosphereMaterial.clone());
 			this.earthAtmosphere.position = this.earth.position;
-			this.earthAtmosphere.scale.multiplyScalar(1.01);
+			this.earthAtmosphere.scale.multiplyScalar(1.005);
 			this.add( this.earthAtmosphere );
 		},
 
