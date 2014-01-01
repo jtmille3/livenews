@@ -48,16 +48,19 @@ define([
       // raleigh 35.843768 N, -78.6450559 W
       this.addPin(35.843768, -78.6450559);
 
-      // London 51.5112139, -0.1198244
-      this.addPin(51.5112139, -0.1198244);
-
+      // San Francisco 37.7749295, -122.4194155
+      this.addPin(37.7749295, -122.4194155);
+      
       // NY 40.7143528, -74.0059731
       this.addPin(40.7143528, -74.0059731);
+
+      // London 51.5112139, -0.1198244
+      this.addPin(51.5112139, -0.1198244);
 
       // Tokyo 35.6894875, 139.6917064
       this.addPin(35.6894875, 139.6917064);
 
-      // Cape Town -33.9248685!4d18.4240553
+      // Cape Town -33.9248685, 18.4240553
       this.addPin(-33.9248685, 18.4240553);
 
       this.controls = new THREE.TrackballControls( this.camera );

@@ -29,7 +29,21 @@ define([
 			this.add(this.earth);
 			this.mesh = this.earth;
 
-			var customMaterial = new THREE.ShaderMaterial({
+			var boundariesMaterial = new THREE.MeshBasicMaterial({ 
+				map: THREE.ImageUtils.loadTexture('images/boundaries_4k.png'),
+				transparent: true,
+				blending: THREE.AdditiveBlending,
+				blendSrc: THREE.OneFactor,
+				blendDst: THREE.OneFactor,
+				blendEquation: THREE.AddEquation
+			});
+			this.boundaries = new THREE.Mesh(earthGeometry.clone(), boundariesMaterial.clone());
+			this.boundaries.position = this.earth.position;
+			this.boundaries.scale.multiplyScalar(1.0001);
+			this.boundaries.rotation.y = 270 * Math.PI / 180; // puts us at point 0 along the prime meridian and equator
+			this.add( this.boundaries );
+
+			var atmosphereMaterial = new THREE.ShaderMaterial({
 	    	uniforms: { 
 					c: { 
 						type: "f", value: 0.9
@@ -53,13 +67,14 @@ define([
 				transparent: true
 			});
 
-			this.earthAtmosphere = new THREE.Mesh(earthGeometry.clone(), customMaterial.clone());
+			this.earthAtmosphere = new THREE.Mesh(earthGeometry.clone(), atmosphereMaterial.clone());
 			this.earthAtmosphere.position = this.earth.position;
 			this.earthAtmosphere.scale.multiplyScalar(1.01);
 			this.add( this.earthAtmosphere );
 		},
 
 		update: function() {
+			// make sure the atmosphere glow is always behind the sphere
 			this.earthAtmosphere.material.uniforms.viewVector.value = new THREE.Vector3().subVectors( this.options.camera.position, this.earth.position );
 		}
 	});
