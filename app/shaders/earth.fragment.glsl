@@ -7,8 +7,8 @@ varying vec2 vUv;
 varying vec3 vNormal;
 
 void main( void ) {
-  vec3 dayColor = texture2D( dayTexture, vUv ).rgb;
   vec3 nightColor = texture2D( nightTexture, vUv ).rgb;
+  vec3 dayColor = texture2D( dayTexture, vUv ).rgb;
 
   // compute cosine sun to normal so -1 is away from sun and +1 is toward sun.
   float cosineAngleSunToNormal = dot(normalize(vNormal), sunDirection);

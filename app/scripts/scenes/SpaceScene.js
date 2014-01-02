@@ -111,8 +111,6 @@ define([
       this._super();
       var timer = Date.now() * 0.0001;
 
-      //this.camera.position.x = -1.1; //Math.cos(timer) * 1.4;
-      //this.camera.position.z = 1.1; //Math.sin(timer) * 1.4;
       if(this.earth) {
         this.earth.object.rotation.y += 0.1 * Math.PI / 180;
         this.earth.object.rotation.x = 23 * Math.PI / 180;

@@ -43,20 +43,18 @@ define([
 				blendEquation: THREE.AddEquation
 			});
 
-			var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [earthMaterial, boundariesMaterial, cityMaterial]);
+			//var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [earthMaterial, boundariesMaterial, cityMaterial]);
 
 			// create the night time shader...
-			/*
+
 			var uniforms = {
-				sunDirection: { type: "v3", value: new THREE.Vector3(0,0,1) },
-				dayTexture: { type: "t", value: 0, texture: THREE.ImageUtils.loadTexture( "images/2_no_clouds_4k.jpg" ) },
-				nightTexture: { type: "t", value: 1, texture: THREE.ImageUtils.loadTexture( "images/cities_4k.png" ) }
+				sunDirection: { type: 'v3', value: new THREE.Vector3(0,0,1) },
+				dayTexture: { type: 't', value: THREE.ImageUtils.loadTexture( 'images/2_no_clouds_4k.jpg' ) },
+				nightTexture: { type: 't', value: THREE.ImageUtils.loadTexture( 'images/cities_4k.png' ) },
+				uCityLightsColor: {type: 'c', value: new THREE.Color( 0xffffff ) },
+				wrapRGB: { type: 'v3', value: new THREE.Vector3( 0, 0, 0 ) },
+				uCityLightsIntensity: {type: 'f', value: 1}
 			};
-
-			uniforms.dayTexture.texture.wrapS = uniforms.dayTexture.texture.wrapT = THREE.Repeat;
-			uniforms.nightTexture.texture.wrapS = uniforms.nightTexture.texture.wrapT = THREE.Repeat;
-
-			var size = 0.75;
 
 			this.earthMaterial2 = new THREE.ShaderMaterial({
 				uniforms: uniforms,
@@ -65,7 +63,7 @@ define([
 			});
 
 			var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [this.earthMaterial2]);
-			*/
+
 
 			earth.rotation.y = 270 * Math.PI / 180; // puts us at point 0 along the prime meridian and equator
 			this.object.add( earth );
@@ -100,7 +98,7 @@ define([
 			this.earthAtmosphere = new THREE.Mesh(earthGeometry.clone(), atmosphereMaterial.clone());
 			this.earthAtmosphere.position = earth.position;
 			this.earthAtmosphere.scale.multiplyScalar(1.005);
-			// this.add( this.earthAtmosphere );
+			this.add( this.earthAtmosphere );
 		},
 
 		addPin: function(latitude, longitude) {
@@ -135,6 +133,12 @@ define([
 		update: function() {
 			// make sure the atmosphere glow is always behind the sphere
 			this.earthAtmosphere.material.uniforms.viewVector.value = new THREE.Vector3().subVectors( this.options.camera.position, this.object.position );
+
+			// Assumes you always know where the sun is...
+			this.earthMaterial2.uniforms.sunDirection.value.x = -2;
+			this.earthMaterial2.uniforms.sunDirection.value.y = 0;
+			this.earthMaterial2.uniforms.sunDirection.value.z = -1;
+      // this.earthMaterial2.uniforms.sunDirection.value.normalize();
 		}
 	});
 });
