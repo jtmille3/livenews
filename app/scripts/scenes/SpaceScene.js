@@ -24,7 +24,7 @@ define([
       });
       this.scene.setGravity(new THREE.Vector3( 0, 0, -9.8 ));
 
-      var ambientLight = new THREE.AmbientLight(0x333333);
+      var ambientLight = new THREE.AmbientLight(0x202020);
       this.addLight( ambientLight );
 
       // directional lighting

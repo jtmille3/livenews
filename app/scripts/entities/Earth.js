@@ -2,7 +2,9 @@ define([
 	'./Entity',
 	'text!../../shaders/atmosphere.vertex.glsl',
 	'text!../../shaders/atmosphere.fragment.glsl',
-], function(Entity, AtmosphereVertex, AtmosphereFragment) {
+	'text!../../shaders/earth.vertex.glsl',
+	'text!../../shaders/earth.fragment.glsl',
+], function(Entity, AtmosphereVertex, AtmosphereFragment, EarthVertex, EarthFragment) {
 	'use strict';
 	
 	return Entity.extend({
@@ -31,7 +33,40 @@ define([
 				blendEquation: THREE.AddEquation
 			});
 
-			var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [earthMaterial, boundariesMaterial]);
+			var cityMaterial = new THREE.MeshBasicMaterial({ 
+				map: THREE.ImageUtils.loadTexture('images/cities_4k.png'),
+				opacity: 1,
+				transparent: true,
+				blending: THREE.AdditiveBlending,
+				blendSrc: THREE.OneFactor,
+				blendDst: THREE.OneFactor,
+				blendEquation: THREE.AddEquation
+			});
+
+			var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [earthMaterial, boundariesMaterial, cityMaterial]);
+
+			// create the night time shader...
+			/*
+			var uniforms = {
+				sunDirection: { type: "v3", value: new THREE.Vector3(0,0,1) },
+				dayTexture: { type: "t", value: 0, texture: THREE.ImageUtils.loadTexture( "images/2_no_clouds_4k.jpg" ) },
+				nightTexture: { type: "t", value: 1, texture: THREE.ImageUtils.loadTexture( "images/cities_4k.png" ) }
+			};
+
+			uniforms.dayTexture.texture.wrapS = uniforms.dayTexture.texture.wrapT = THREE.Repeat;
+			uniforms.nightTexture.texture.wrapS = uniforms.nightTexture.texture.wrapT = THREE.Repeat;
+
+			var size = 0.75;
+
+			this.earthMaterial2 = new THREE.ShaderMaterial({
+				uniforms: uniforms,
+				vertexShader: EarthVertex,
+				fragmentShader: EarthFragment
+			});
+
+			var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [this.earthMaterial2]);
+			*/
+
 			earth.rotation.y = 270 * Math.PI / 180; // puts us at point 0 along the prime meridian and equator
 			this.object.add( earth );
 
@@ -65,7 +100,7 @@ define([
 			this.earthAtmosphere = new THREE.Mesh(earthGeometry.clone(), atmosphereMaterial.clone());
 			this.earthAtmosphere.position = earth.position;
 			this.earthAtmosphere.scale.multiplyScalar(1.005);
-			this.add( this.earthAtmosphere );
+			// this.add( this.earthAtmosphere );
 		},
 
 		addPin: function(latitude, longitude) {
