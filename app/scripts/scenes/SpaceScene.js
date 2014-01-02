@@ -118,7 +118,7 @@ define([
         this.earth.object.rotation.x = 23 * Math.PI / 180;
       }
 
-      this.camera.lookAt ( this.earth.mesh.position );
+      this.camera.lookAt ( this.earth.object.position );
 
       this.controls.update();
     },

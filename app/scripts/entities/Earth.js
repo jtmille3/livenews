@@ -13,21 +13,15 @@ define([
 
 			var earthGeometry = new THREE.SphereGeometry(0.5, 64, 64);
 
-			this.earth = new THREE.Mesh(
-			  earthGeometry.clone(),
-			  new THREE.MeshPhongMaterial({
-			    map: THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
-			    alphaMap: THREE.ImageUtils.loadTexture('images/boundaries_4k.png'),
-			    transparent: true,
-			    bumpMap: THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
-			    bumpScale: 0.005,
-			    specularMap: THREE.ImageUtils.loadTexture('images/water_4k.png'),
-			    specular: new THREE.Color('grey')
-			  })
-			);
-			this.earth.rotation.y = 270 * Math.PI / 180; // puts us at point 0 along the prime meridian and equator
-			this.object.add(this.earth);
-			this.mesh = this.earth;
+			var earthMaterial = new THREE.MeshPhongMaterial({
+		    map: THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
+		    alphaMap: THREE.ImageUtils.loadTexture('images/boundaries_4k.png'),
+		    transparent: true,
+		    bumpMap: THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
+		    bumpScale: 0.005,
+		    specularMap: THREE.ImageUtils.loadTexture('images/water_4k.png'),
+		    specular: new THREE.Color('grey')
+		  });
 
 			var boundariesMaterial = new THREE.MeshBasicMaterial({ 
 				map: THREE.ImageUtils.loadTexture('images/boundaries_4k.png'),
@@ -37,11 +31,10 @@ define([
 				blendDst: THREE.OneFactor,
 				blendEquation: THREE.AddEquation
 			});
-			this.boundaries = new THREE.Mesh(earthGeometry.clone(), boundariesMaterial.clone());
-			this.boundaries.position = this.earth.position;
-			this.boundaries.scale.multiplyScalar(1.0001);
-			this.boundaries.rotation.y = 270 * Math.PI / 180; // puts us at point 0 along the prime meridian and equator
-			this.object.add( this.boundaries );
+
+			var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [earthMaterial, boundariesMaterial]);
+			earth.rotation.y = 270 * Math.PI / 180; // puts us at point 0 along the prime meridian and equator
+			this.object.add( earth );
 
 			this.add(this.object);
 
@@ -71,7 +64,7 @@ define([
 
 			// needs to move independently of earth
 			this.earthAtmosphere = new THREE.Mesh(earthGeometry.clone(), atmosphereMaterial.clone());
-			this.earthAtmosphere.position = this.earth.position;
+			this.earthAtmosphere.position = earth.position;
 			this.earthAtmosphere.scale.multiplyScalar(1.005);
 			this.add( this.earthAtmosphere );
 		},
@@ -107,7 +100,7 @@ define([
 
 		update: function() {
 			// make sure the atmosphere glow is always behind the sphere
-			this.earthAtmosphere.material.uniforms.viewVector.value = new THREE.Vector3().subVectors( this.options.camera.position, this.earth.position );
+			this.earthAtmosphere.material.uniforms.viewVector.value = new THREE.Vector3().subVectors( this.options.camera.position, this.object.position );
 		}
 	});
 });
