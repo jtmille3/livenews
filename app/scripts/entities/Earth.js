@@ -43,17 +43,15 @@ define([
 				blendEquation: THREE.AddEquation
 			});
 
-			//var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [earthMaterial, boundariesMaterial, cityMaterial]);
+			var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [earthMaterial, boundariesMaterial, cityMaterial]);
 
 			// create the night time shader...
-
+			/*
 			var uniforms = {
-				sunDirection: { type: 'v3', value: new THREE.Vector3(0,0,1) },
-				dayTexture: { type: 't', value: THREE.ImageUtils.loadTexture( 'images/2_no_clouds_4k.jpg' ) },
-				nightTexture: { type: 't', value: THREE.ImageUtils.loadTexture( 'images/cities_4k.png' ) },
-				uCityLightsColor: {type: 'c', value: new THREE.Color( 0xffffff ) },
-				wrapRGB: { type: 'v3', value: new THREE.Vector3( 0, 0, 0 ) },
-				uCityLightsIntensity: {type: 'f', value: 1}
+				tSunLight: { type: 'v3', value: new THREE.Vector3(0,0,1) },
+				tCityLights: { type: 't', value: THREE.ImageUtils.loadTexture( 'images/cities_4k.png' ) },
+				uCityLightsColor: { type: "c", value: new THREE.Color( 0xffffff ) },
+				uCityLightsIntensity: { type: 'f', value: 1.0 }
 			};
 
 			this.earthMaterial2 = new THREE.ShaderMaterial({
@@ -62,8 +60,8 @@ define([
 				fragmentShader: EarthFragment
 			});
 
-			var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [this.earthMaterial2]);
-
+			var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [this.earthMaterial2, earthMaterial, boundariesMaterial]);
+			*/
 
 			earth.rotation.y = 270 * Math.PI / 180; // puts us at point 0 along the prime meridian and equator
 			this.object.add( earth );
@@ -135,10 +133,10 @@ define([
 			this.earthAtmosphere.material.uniforms.viewVector.value = new THREE.Vector3().subVectors( this.options.camera.position, this.object.position );
 
 			// Assumes you always know where the sun is...
-			this.earthMaterial2.uniforms.sunDirection.value.x = -2;
-			this.earthMaterial2.uniforms.sunDirection.value.y = 0;
-			this.earthMaterial2.uniforms.sunDirection.value.z = -1;
-      // this.earthMaterial2.uniforms.sunDirection.value.normalize();
+			// this.earthMaterial2.uniforms.tSunLight.value.x = 0;
+			// this.earthMaterial2.uniforms.tSunLight.value.y = 0;
+			// this.earthMaterial2.uniforms.tSunLight.value.z = 0;
+   //    this.earthMaterial2.uniforms.tSunLight.value.normalize();
 		}
 	});
 });

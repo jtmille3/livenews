@@ -1,26 +1,27 @@
-uniform sampler2D dayTexture;
-uniform sampler2D nightTexture;
+uniform sampler2D tCityLights;
 
-uniform vec3 sunDirection;
+uniform vec3 tSunLight;
+uniform vec3 uCityLightsColor;
+uniform float uCityLightsIntensity;
 
 varying vec2 vUv;
 varying vec3 vNormal;
+varying vec3 vOriginalNormal;
 
 void main( void ) {
-  vec3 nightColor = texture2D( nightTexture, vUv ).rgb;
-  vec3 dayColor = texture2D( dayTexture, vUv ).rgb;
+  vec3 dirDiffuse = vec3( 0.0 );
+  vec3 dirSpecular = vec3( 0.0 );
 
-  // compute cosine sun to normal so -1 is away from sun and +1 is toward sun.
-  float cosineAngleSunToNormal = dot(normalize(vNormal), sunDirection);
+  vec4 lDirection = viewMatrix * vec4( tSunLight, 0.0 );
+  vec3 dirVector = normalize( lDirection.xyz );
 
-  // sharpen the edge beween the transition
-  cosineAngleSunToNormal = clamp( cosineAngleSunToNormal * 10.0, -1.0, 1.0);
+  float directionalLightWeightingFull = max(-1.0 * dot( vOriginalNormal, dirVector ), 0.0);
+  float directionalLightWeightingHalf = max(-1.0 * 0.5 * dot( vOriginalNormal, dirVector ) + 0.5, 0.0);
 
-  // convert to 0 to 1 for mixing
-  float mixAmount = cosineAngleSunToNormal * 0.5 + 0.5;
-
-  // Select day or night texture based on mix.
-  vec3 color = mix( nightColor, dayColor, mixAmount );
-
-  gl_FragColor = vec4( color, 1.0 );
+  vec3 dirDiffuseWeight = mix( vec3( directionalLightWeightingFull ), vec3( directionalLightWeightingHalf ), vec3(0.0) );
+  dirDiffuse += uCityLightsColor * uCityLightsColor * dirDiffuseWeight;
+  
+  vec4 texelColor = texture2D( tCityLights, vUv );
+  gl_FragColor = gl_FragColor + (uCityLightsIntensity * vec4(dirDiffuse, 1.0) * (texelColor.x / 1.0));
+  // gl_FragColor = texelColor;
 }
