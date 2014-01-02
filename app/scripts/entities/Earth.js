@@ -82,7 +82,7 @@ define([
       var radius = 0.005;
       var ball = new THREE.Mesh(
         new THREE.SphereGeometry(radius, 8, 8),
-        new THREE.MeshBasicMaterial({
+        new THREE.MeshPhongMaterial({
           color: 0xAA0000
         })
       );
@@ -95,11 +95,11 @@ define([
       var quaternion= new THREE.Quaternion();
 
       // translate along the latitude or x-axis (make negative to reverse spin)
-      quaternion.setFromAxisAngle(new THREE.Vector3(1,0,0).normalize(), latitude * Math.PI / -180);
+      quaternion.setFromAxisAngle(new THREE.Vector3(1,0,0), latitude * Math.PI / -180);
       pin.quaternion.multiplyQuaternions(quaternion, pin.quaternion);
 
       // translate along the longitude or y-axis
-      quaternion.setFromAxisAngle(new THREE.Vector3(0,1,0).normalize(), longitude * Math.PI / 180);
+      quaternion.setFromAxisAngle(new THREE.Vector3(0,1,0), longitude * Math.PI / 180);
       pin.quaternion.multiplyQuaternions(quaternion, pin.quaternion);
 
       this.object.add(pin);
