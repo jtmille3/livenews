@@ -1,9 +1,8 @@
 define([
   './Scene',
   '../entities/Galaxy',
-  '../entities/Earth',
-  '../entities/Pin'
-], function(Scene, Galaxy, Earth, Pin) {
+  '../entities/Earth'
+], function(Scene, Galaxy, Earth) {
   'use strict';
   return Scene.extend({
 
@@ -46,22 +45,22 @@ define([
       this.addEntity(this.earth);
 
       // raleigh 35.843768 N, -78.6450559 W
-      this.addPin(35.843768, -78.6450559);
+      this.earth.addPin(35.843768, -78.6450559);
 
       // San Francisco 37.7749295, -122.4194155
-      this.addPin(37.7749295, -122.4194155);
+      this.earth.addPin(37.7749295, -122.4194155);
       
       // NY 40.7143528, -74.0059731
-      this.addPin(40.7143528, -74.0059731);
+      this.earth.addPin(40.7143528, -74.0059731);
 
       // London 51.5112139, -0.1198244
-      this.addPin(51.5112139, -0.1198244);
+      this.earth.addPin(51.5112139, -0.1198244);
 
       // Tokyo 35.6894875, 139.6917064
-      this.addPin(35.6894875, 139.6917064);
+      this.earth.addPin(35.6894875, 139.6917064);
 
       // Cape Town -33.9248685, 18.4240553
-      this.addPin(-33.9248685, 18.4240553);
+      this.earth.addPin(-33.9248685, 18.4240553);
 
       this.controls = new THREE.TrackballControls( this.camera );
 
@@ -76,18 +75,6 @@ define([
       this.controls.dynamicDampingFactor = 0.3;
 
       this.controls.keys = [ 65, 83, 68 ];
-
-      // this.controls.addEventListener( 'change', render );
-    },
-
-    addPin: function(latitude, longitude) {
-      var pin = new Pin({
-        scene: this.scene,
-        camera: this.camera,
-        latitude: latitude,
-        longitude: longitude
-      });
-      this.earth.addPin(pin.pin);
     },
 
     load: function(renderer) {
@@ -127,7 +114,8 @@ define([
       //this.camera.position.x = -1.1; //Math.cos(timer) * 1.4;
       //this.camera.position.z = 1.1; //Math.sin(timer) * 1.4;
       if(this.earth) {
-        this.earth.object.rotation.y += Math.cos(timer) * Math.PI / 180;
+        this.earth.object.rotation.y += 0.1 * Math.PI / 180;
+        this.earth.object.rotation.x = 23 * Math.PI / 180;
       }
 
       this.camera.lookAt ( this.earth.mesh.position );
