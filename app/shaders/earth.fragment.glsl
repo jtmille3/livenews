@@ -15,13 +15,14 @@ void main( void ) {
   vec4 lDirection = viewMatrix * vec4( tSunLight, 0.0 );
   vec3 dirVector = normalize( lDirection.xyz );
 
-  float directionalLightWeightingFull = max(-1.0 * dot( vOriginalNormal, dirVector ), 0.0);
-  float directionalLightWeightingHalf = max(-1.0 * 0.5 * dot( vOriginalNormal, dirVector ) + 0.5, 0.0);
+  float directionalLightWeightingFull = max(-1.0 * dot( vNormal, dirVector ), 0.0);
+  float directionalLightWeightingHalf = max(-1.0 * 0.5 * dot( vNormal, dirVector ) + 0.5, 0.0);
 
   vec3 dirDiffuseWeight = mix( vec3( directionalLightWeightingFull ), vec3( directionalLightWeightingHalf ), vec3(0.0) );
   dirDiffuse += uCityLightsColor * uCityLightsColor * dirDiffuseWeight;
   
   vec4 texelColor = texture2D( tCityLights, vUv );
+  texelColor.w = 0.5; // this won't work because there is really no transparency
   gl_FragColor = gl_FragColor + (uCityLightsIntensity * vec4(dirDiffuse, 1.0) * (texelColor.x / 1.0));
-  // gl_FragColor = texelColor;
+  gl_FragColor = texelColor;
 }

@@ -20,7 +20,6 @@
         <script src="bower_components/soundmanager2/script/soundmanager2.js"></script>
         <script src="bower_components/threejs/build/three.js"></script>
         <script src="bower_components/threejs-stats/Stats.js"></script>
-        <script src="bower_components/physijs/physi.js"></script>
         <script src="scripts/utilities/Detector.js"></script>
         <script src="scripts/controls/TrackballControls.js"></script>
         <!-- endbuild -->
@@ -54,22 +53,12 @@
               console = { log: function() { } };
             }
 
-            Physijs.scripts.worker = '/bower_components/physijs/physijs_worker.js';
-            Physijs.scripts.ammo = '/bower_components/ammo.js/builds/ammo.js';
-
             var render_stats = new Stats();
             render_stats.setMode(0); // 0: fps, 1: ms
             render_stats.domElement.style.position = 'absolute';
             render_stats.domElement.style.left = '0px';
             render_stats.domElement.style.top = '0px';
             document.body.appendChild( render_stats.domElement );
-
-            var physic_stats = new Stats();
-            physic_stats.setMode(0);
-            physic_stats.domElement.style.position = 'absolute';
-            physic_stats.domElement.style.top = '50px';
-            physic_stats.domElement.style.zIndex = 100;
-            document.body.appendChild( physic_stats.domElement );
         </script>
 
         <!-- build:js scripts/main.js -->

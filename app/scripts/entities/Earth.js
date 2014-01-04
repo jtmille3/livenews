@@ -1,106 +1,106 @@
 define([
-	'./Entity',
-	'text!../../shaders/atmosphere.vertex.glsl',
-	'text!../../shaders/atmosphere.fragment.glsl',
-	'text!../../shaders/earth.vertex.glsl',
-	'text!../../shaders/earth.fragment.glsl',
+  './Entity',
+  'text!../../shaders/atmosphere.vertex.glsl',
+  'text!../../shaders/atmosphere.fragment.glsl',
+  'text!../../shaders/earth.vertex.glsl',
+  'text!../../shaders/earth.fragment.glsl',
 ], function(Entity, AtmosphereVertex, AtmosphereFragment, EarthVertex, EarthFragment) {
-	'use strict';
-	
-	return Entity.extend({
-		init: function(options) {
-			this._super(options);
+  'use strict';
+  
+  return Entity.extend({
+    init: function(options) {
+      this._super(options);
 
-			this.object = new THREE.Object3D();
+      this.object = new THREE.Object3D();
 
-			var earthGeometry = new THREE.SphereGeometry(0.5, 64, 64);
+      var earthGeometry = new THREE.SphereGeometry(0.5, 64, 64);
+      earthGeometry.computeTangents();
 
-			var earthMaterial = new THREE.MeshPhongMaterial({
-		    map: THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
-		  	normalMap: THREE.ImageUtils.loadTexture('images/elev_normal_4k.png'),
-		    //bumpMap: THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
-		    //bumpScale: 0.005,
-		    specularMap: THREE.ImageUtils.loadTexture('images/water_4k.png'),
-		    specular: new THREE.Color('grey')
-		  });
+      var earthMaterial = new THREE.MeshPhongMaterial({
+        map: THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
+        normalMap: THREE.ImageUtils.loadTexture('images/elev_normal_4k.png'),
+        //bumpMap: THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
+        //bumpScale: 0.005,
+        specularMap: THREE.ImageUtils.loadTexture('images/water_4k.png'),
+        specular: new THREE.Color('grey')
+      });
 
-			var boundariesMaterial = new THREE.MeshBasicMaterial({ 
-				map: THREE.ImageUtils.loadTexture('images/boundaries_4k.png'),
-				transparent: true,
-				blending: THREE.AdditiveBlending,
-				blendSrc: THREE.OneFactor,
-				blendDst: THREE.OneFactor,
-				blendEquation: THREE.AddEquation
-			});
+      var boundariesMaterial = new THREE.MeshBasicMaterial({ 
+        map: THREE.ImageUtils.loadTexture('images/boundaries_4k.png'),
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        blendSrc: THREE.OneFactor,
+        blendDst: THREE.OneFactor,
+        blendEquation: THREE.AddEquation
+      });
 
-			var cityMaterial = new THREE.MeshBasicMaterial({ 
-				map: THREE.ImageUtils.loadTexture('images/cities_4k.png'),
-				opacity: 1,
-				transparent: true,
-				blending: THREE.AdditiveBlending,
-				blendSrc: THREE.OneFactor,
-				blendDst: THREE.OneFactor,
-				blendEquation: THREE.AddEquation
-			});
+      var cityMaterial = new THREE.MeshBasicMaterial({ 
+        map: THREE.ImageUtils.loadTexture('images/cities_4k.png'),
+        opacity: 1,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        blendSrc: THREE.OneFactor,
+        blendDst: THREE.OneFactor,
+        blendEquation: THREE.AddEquation
+      });
 
-			var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [earthMaterial, boundariesMaterial, cityMaterial]);
+      //var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [earthMaterial, boundariesMaterial, cityMaterial]);
 
-			// create the night time shader...
-			/*
-			var uniforms = {
-				tSunLight: { type: 'v3', value: new THREE.Vector3(0,0,1) },
-				tCityLights: { type: 't', value: THREE.ImageUtils.loadTexture( 'images/cities_4k.png' ) },
-				uCityLightsColor: { type: "c", value: new THREE.Color( 0xffffff ) },
-				uCityLightsIntensity: { type: 'f', value: 1.0 }
-			};
+      // create the night time shader...
+      
+      var uniforms = {
+        tSunLight: { type: 'v3', value: new THREE.Vector3(0,0,1) },
+        tCityLights: { type: 't', value: THREE.ImageUtils.loadTexture( 'images/cities_4k.png' ) },
+        uCityLightsColor: { type: "c", value: new THREE.Color( 0xffffff ) },
+        uCityLightsIntensity: { type: 'f', value: 1.0 }
+      };
 
-			this.earthMaterial2 = new THREE.ShaderMaterial({
-				uniforms: uniforms,
-				vertexShader: EarthVertex,
-				fragmentShader: EarthFragment
-			});
+      this.earthMaterial2 = new THREE.ShaderMaterial({
+        uniforms: uniforms,
+        vertexShader: EarthVertex,
+        fragmentShader: EarthFragment
+      });
 
-			var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [this.earthMaterial2, earthMaterial, boundariesMaterial]);
-			*/
+      var earth = THREE.SceneUtils.createMultiMaterialObject(earthGeometry.clone(), [earthMaterial, boundariesMaterial, this.earthMaterial2]);
 
-			earth.rotation.y = 270 * Math.PI / 180; // puts us at point 0 along the prime meridian and equator
-			this.object.add( earth );
+      earth.rotation.y = 270 * Math.PI / 180; // puts us at point 0 along the prime meridian and equator
+      this.object.add( earth );
 
-			this.add(this.object);
+      this.add(this.object);
 
-			var atmosphereMaterial = new THREE.ShaderMaterial({
-	    	uniforms: { 
-					c: { 
-						type: "f", value: 1.5
-					},
-					p: { 
-						type: "f", value: 6.0
-					},
-					glowColor: { 
-						type: "c", 
-						value: new THREE.Color(0x6789af) 
-					},
-					viewVector: { 
-						type: "v3", 
-						value: new THREE.Vector3(1, 0, 1)
-					}
-				},
-				vertexShader: AtmosphereVertex,
-				fragmentShader: AtmosphereFragment,
-				side: THREE.FrontSide,
-				blending: THREE.AdditiveBlending,
-				transparent: true
-			});
+      var atmosphereMaterial = new THREE.ShaderMaterial({
+        uniforms: { 
+          c: { 
+            type: "f", value: 1.5
+          },
+          p: { 
+            type: "f", value: 6.0
+          },
+          glowColor: { 
+            type: "c", 
+            value: new THREE.Color(0x6789af) 
+          },
+          viewVector: { 
+            type: "v3", 
+            value: new THREE.Vector3(1, 0, 1)
+          }
+        },
+        vertexShader: AtmosphereVertex,
+        fragmentShader: AtmosphereFragment,
+        side: THREE.FrontSide,
+        blending: THREE.AdditiveBlending,
+        transparent: true
+      });
 
-			// needs to move independently of earth
-			this.earthAtmosphere = new THREE.Mesh(earthGeometry.clone(), atmosphereMaterial.clone());
-			this.earthAtmosphere.position = earth.position;
-			this.earthAtmosphere.scale.multiplyScalar(1.005);
-			this.add( this.earthAtmosphere );
-		},
+      // needs to move independently of earth
+      this.earthAtmosphere = new THREE.Mesh(earthGeometry.clone(), atmosphereMaterial.clone());
+      this.earthAtmosphere.position = earth.position;
+      this.earthAtmosphere.scale.multiplyScalar(1.005);
+      this.add( this.earthAtmosphere );
+    },
 
-		addPin: function(latitude, longitude) {
-			var pin = new THREE.Object3D();
+    addPin: function(latitude, longitude) {
+      var pin = new THREE.Object3D();
 
       var radius = 0.005;
       var ball = new THREE.Mesh(
@@ -126,17 +126,17 @@ define([
       pin.quaternion.multiplyQuaternions(quaternion, pin.quaternion);
 
       this.object.add(pin);
-		},
+    },
 
-		update: function() {
-			// make sure the atmosphere glow is always behind the sphere
-			this.earthAtmosphere.material.uniforms.viewVector.value = new THREE.Vector3().subVectors( this.options.camera.position, this.object.position );
+    update: function() {
+      // make sure the atmosphere glow is always behind the sphere
+      this.earthAtmosphere.material.uniforms.viewVector.value = new THREE.Vector3().subVectors( this.options.camera.position, this.object.position );
 
-			// Assumes you always know where the sun is...
-			// this.earthMaterial2.uniforms.tSunLight.value.x = 0;
-			// this.earthMaterial2.uniforms.tSunLight.value.y = 0;
-			// this.earthMaterial2.uniforms.tSunLight.value.z = 0;
-   //    this.earthMaterial2.uniforms.tSunLight.value.normalize();
-		}
-	});
+      // Assumes you always know where the sun is...
+      this.earthMaterial2.uniforms.tSunLight.value.x = 0;
+      this.earthMaterial2.uniforms.tSunLight.value.y = 0;
+      this.earthMaterial2.uniforms.tSunLight.value.z = 0;
+      this.earthMaterial2.uniforms.tSunLight.value.normalize();
+    }
+  });
 });

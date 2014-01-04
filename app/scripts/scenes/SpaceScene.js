@@ -19,11 +19,8 @@ define([
       this.camera.position.set(1, 0, 1);
       this.camera.up.set( 0, 1, 0 );
 
-      this.scene = new Physijs.Scene({
-        fixedTimeStep: 1 / 60
-      });
-      this.scene.setGravity(new THREE.Vector3( 0, 0, -9.8 ));
-
+      this.scene = new THREE.Scene();
+      
       var ambientLight = new THREE.AmbientLight(0x202020);
       this.addLight( ambientLight );
 
@@ -87,13 +84,6 @@ define([
       window.addEventListener('mouseup', function() {
         that.input.click = false;
       });
-
-      this.scene.addEventListener('update', function() {
-        that.scene.simulate(undefined, 2);
-        physic_stats.update();
-      });
-
-      this.scene.simulate();
 
       this._super(renderer);
     },
